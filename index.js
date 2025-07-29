@@ -20,10 +20,5 @@ app.get('/hello', (req, res) => {
   res.status(201).send('Hello, world!');
 });
 
-// Start the server
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
 
 export default app;
