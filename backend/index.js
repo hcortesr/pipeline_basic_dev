@@ -1,6 +1,7 @@
 // Import express
 import express from 'express';
 const app = express();
+import os from'os';
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -14,6 +15,10 @@ app.get('/health', (req, res) => {
 app.post('/echo', (req, res) => {
   res.json(req.body);
 });
+
+app.get('/ip', (req, res) => {
+  res.send(os.hostname());
+})
 
 // Endpoint: /hello
 app.get('/hello', (req, res) => {
