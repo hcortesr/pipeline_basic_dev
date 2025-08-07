@@ -1,64 +1,64 @@
-name: "terraform-setup"
+# name: "terraform-setup"
 
 
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'infra/**'
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - 'infra/**'
 
-  workflow_dispatch: 
+#   workflow_dispatch: 
 
 
-jobs:
-  infra:
-    runs-on: ubuntu-latest 
-    steps:
-      - name: Get the repo
-        uses: actions/checkout@v4.2.2
-      - name: "files"
-        run: ls
+# jobs:
+#   infra:
+#     runs-on: ubuntu-latest 
+#     steps:
+#       - name: Get the repo
+#         uses: actions/checkout@v4.2.2
+#       - name: "files"
+#         run: ls
 
-      - name: Set up terraform
-        uses: hashicorp/setup-terraform@v3
+#       - name: Set up terraform
+#         uses: hashicorp/setup-terraform@v3
       
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4.1.0
-        with:
-          aws-access-key-id: ${{ secrets.KEY_ID }}
-          aws-secret-access-key: ${{ secrets.ACCESS_KEY }}
-          aws-region: us-east-1
+#       - name: Configure AWS Credentials
+#         uses: aws-actions/configure-aws-credentials@v4.1.0
+#         with:
+#           aws-access-key-id: ${{ secrets.KEY_ID }}
+#           aws-secret-access-key: ${{ secrets.ACCESS_KEY }}
+#           aws-region: us-east-1
 
-      - name: Initialize Terraform
-        run: |
-          cd infrastructure
-          terraform init
+#       - name: Initialize Terraform
+#         run: |
+#           cd infrastructure
+#           terraform init
 
-      - name: Terraform plan
-        run: |
-          cd infrastructure
-          terraform plan
+#       - name: Terraform plan
+#         run: |
+#           cd infrastructure
+#           terraform plan
 
-      - name: Terraform apply
-        run: |
-          cd infrastructure
-          terraform apply -auto-approve
+#       - name: Terraform apply
+#         run: |
+#           cd infrastructure
+#           terraform apply -auto-approve
 
-      - name: Save public_dns.txt
-        run: |
-          cd infrastructure
-          terraform output -raw public_dns_instance
-          terraform output public_dns_instance
-          public_dns=$(terraform output -raw public_dns_instance)
-          echo $public_dns
-          cd ..
-          mkdir -p tf_vars
-          echo $public_dns > tf_vars/public_dns.txt
-          cat tf_vars/public_dns.txt
+#       - name: Save public_dns.txt
+#         run: |
+#           cd infrastructure
+#           terraform output -raw public_dns_instance
+#           terraform output public_dns_instance
+#           public_dns=$(terraform output -raw public_dns_instance)
+#           echo $public_dns
+#           cd ..
+#           mkdir -p tf_vars
+#           echo $public_dns > tf_vars/public_dns.txt
+#           cat tf_vars/public_dns.txt
 
-      - name: Upload file to GitHub Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: tf_vars
-          path: tf_vars
+#       - name: Upload file to GitHub Artifacts
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: tf_vars
+#           path: tf_vars
